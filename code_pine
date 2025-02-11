@@ -1,0 +1,66 @@
+//
+// © I_AM_THE_VIPER
+
+//@version=6
+indicator('Powers of 2 and 3 Table', overlay = true,dynamic_requests = true)
+LOOK_BACK=input.int(defval = 1,title = "look back",minval=0,maxval=499)
+// Function to calculate the lower power of 2
+f_get_lower_power_of_2(_in) =>
+    math.pow(2, math.floor(math.log(_in) / math.log(2)))
+
+// Function to calculate the upper power of 2
+f_get_upper_power_of_2(_in) =>
+    math.pow(2, math.ceil(math.log(_in) / math.log(2)))
+
+// Function to calculate the lower power of 3
+f_get_lower_power_of_3(_in) =>
+    math.pow(3, math.floor(math.log(_in) / math.log(3)))
+
+// Function to calculate the upper power of 3
+f_get_upper_power_of_3(_in) =>
+    math.pow(3, math.ceil(math.log(_in) / math.log(3)))
+
+// Input value for which to calculate powers
+// Function to calculate the lower power of 2
+f_get_lower_power_of_10(_in) =>
+    math.pow(10, math.floor(math.log(_in) / math.log(10)))
+
+// Function to calculate the upper power of 2
+f_get_upper_power_of_10(_in) =>
+    math.pow(10, math.ceil(math.log(_in) / math.log(10)))
+input_value = request.security(syminfo.tickerid,"45",open[LOOK_BACK])
+
+// Calculate powers of 2
+lower_power_of_2 = f_get_lower_power_of_2(input_value)
+upper_power_of_2 = f_get_upper_power_of_2(input_value)
+
+// Calculate powers of 3
+lower_power_of_3 = f_get_lower_power_of_3(input_value)
+upper_power_of_3 = f_get_upper_power_of_3(input_value)
+// Calculate powers of 3
+lower_power_of_10 = f_get_lower_power_of_10(input_value)
+upper_power_of_10 = f_get_upper_power_of_10(input_value)
+// Create a table to display the results
+var my_table = table.new(position = position.bottom_center, columns = 31, rows = 51, border_width = 1)
+
+// Populate the table
+if barstate.islast
+    table.cell(my_table, 0, 0, 'Input Value', text_color = color.white, bgcolor = color.rgb(11, 0, 72))
+    table.cell(my_table, 0, 1, str.tostring(input_value), text_color = color.white, bgcolor = color.rgb(15, 0, 112))
+
+    table.cell(my_table, 1, 0, 'Power Type', text_color = color.white, bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 1, 1, 'Lower Power', text_color = color.white, bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 1, 2, 'Upper Power', text_color = color.white, bgcolor = color.rgb(0, 0, 0))
+
+    table.cell(my_table, 2, 0, 'Base 2', text_color = color.rgb(245, 245, 248), bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 2, 1, str.tostring(lower_power_of_2), text_color = color.rgb(255, 248, 248), bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 2, 2, str.tostring(upper_power_of_2), text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
+
+    table.cell(my_table, 3, 0, 'Base 3', text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 3, 1, str.tostring(lower_power_of_3), text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 3, 2, str.tostring(upper_power_of_3), text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
+
+
+    table.cell(my_table, 4, 0, 'Base 10', text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 4, 1, str.tostring(lower_power_of_10), text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
+    table.cell(my_table, 4, 2, str.tostring(upper_power_of_10), text_color = color.rgb(255, 255, 255), bgcolor = color.rgb(0, 0, 0))
